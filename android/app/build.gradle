@@ -1,0 +1,51 @@
+plugins {
+    id 'com.android.application'
+}
+
+def webAssetsDir = file("$buildDir/generated/webAssets")
+
+tasks.register('prepareWebAssets', Sync) {
+    from(file('../..')) {
+        include 'index.html'
+        include 'styles.css'
+        include 'app.js'
+    }
+    into(webAssetsDir)
+}
+
+android {
+    namespace 'com.nexus.control'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.nexus.control'
+        minSdk 26
+        targetSdk 35
+        versionCode 1
+        versionName '1.0.0'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // Package the existing web dashboard directly into the APK. Keeping a single
+    // source means the browser panel and the Android app stay visually identical.
+    sourceSets {
+        main {
+            assets.srcDirs = [webAssetsDir]
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+tasks.named('preBuild') {
+    dependsOn('prepareWebAssets')
+}
