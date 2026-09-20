@@ -16,3 +16,4 @@ sudo
 dbus-x11
 policykit-1
 ca-certificates
+qemu-guest-agent
