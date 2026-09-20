@@ -10,4 +10,10 @@ lb config \
   --linux-packages linux-image \
   --memtest none \
   --apt-recommends true \
+  --mirror-bootstrap "http://ftp.es.debian.org/debian" \
+  --mirror-chroot "http://ftp.es.debian.org/debian" \
+  --mirror-binary "http://ftp.es.debian.org/debian" \
+  --mirror-chroot-security "http://ftp.es.debian.org/debian-security" \
+  --mirror-binary-security "http://ftp.es.debian.org/debian-security" \
+  --apt-options "-y -o Acquire::ForceIPv4=true -o Acquire::Retries=10 -o Acquire::http::Timeout=60 -o Acquire::https::Timeout=60 -o Acquire::http::Pipeline-Depth=0" \
   --bootappend-live "boot=live components username=nexus locales=en_US.UTF-8 keyboard-layouts=us"

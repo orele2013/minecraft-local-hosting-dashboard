@@ -2,8 +2,8 @@ FROM debian:bookworm
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
+RUN apt-get -o Acquire::ForceIPv4=true -o Acquire::Retries=10 -o Acquire::http::Timeout=60 update \
+    && apt-get -o Acquire::ForceIPv4=true -o Acquire::Retries=10 -o Acquire::http::Timeout=60 install -y --no-install-recommends \
        ca-certificates \
        debootstrap \
        live-build \
@@ -14,6 +14,13 @@ RUN apt-get update \
        squashfs-tools \
        xorriso \
        xz-utils \
+    && printf '%s\n' \
+       'Acquire::ForceIPv4 "true";' \
+       'Acquire::Retries "10";' \
+       'Acquire::http::Timeout "60";' \
+       'Acquire::https::Timeout "60";' \
+       'Acquire::http::Pipeline-Depth "0";' \
+       > /etc/apt/apt.conf.d/99nexus-network \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /build

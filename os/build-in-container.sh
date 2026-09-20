@@ -8,7 +8,9 @@ mkdir -p "$BUILD_DIR/config/includes.chroot/opt/nexus-control"
 rsync -a --delete "$WEB_DIR/" "$BUILD_DIR/config/includes.chroot/opt/nexus-control/"
 
 cd "$BUILD_DIR"
-lb clean --purge >/dev/null 2>&1 || true
+# Remove generated build stages while keeping the mounted live-build package
+# cache so an interrupted network transfer does not force a full redownload.
+lb clean --chroot --binary --stage --source >/dev/null 2>&1 || true
 # live-build automatically executes auto/config and auto/build when those
 # wrappers are present. This entrypoint owns the build sequence, so hide the
 # wrappers temporarily to avoid them calling themselves recursively.
@@ -29,6 +31,12 @@ lb config \
   --linux-packages linux-image \
   --memtest none \
   --apt-recommends true \
+  --mirror-bootstrap "http://ftp.es.debian.org/debian" \
+  --mirror-chroot "http://ftp.es.debian.org/debian" \
+  --mirror-binary "http://ftp.es.debian.org/debian" \
+  --mirror-chroot-security "http://ftp.es.debian.org/debian-security" \
+  --mirror-binary-security "http://ftp.es.debian.org/debian-security" \
+  --apt-options "-y -o Acquire::ForceIPv4=true -o Acquire::Retries=10 -o Acquire::http::Timeout=60 -o Acquire::https::Timeout=60 -o Acquire::http::Pipeline-Depth=0" \
   --bootappend-live "boot=live components username=nexus locales=en_US.UTF-8 keyboard-layouts=us"
 lb build
 trap - EXIT

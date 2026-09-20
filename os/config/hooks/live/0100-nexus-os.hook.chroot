@@ -5,6 +5,7 @@ install -d -m 0755 /srv/minecraft /etc/nexus /etc/systemd/system/multi-user.targ
 install -d -m 0755 /home/nexus/Desktop
 
 useradd --create-home --shell /bin/bash --groups audio,video,plugdev,sudo nexus 2>/dev/null || true
+passwd --delete nexus >/dev/null 2>&1 || true
 printf 'nexus ALL=(ALL) NOPASSWD:ALL\n' > /etc/sudoers.d/nexus
 chmod 0440 /etc/sudoers.d/nexus
 
