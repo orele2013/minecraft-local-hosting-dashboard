@@ -1,0 +1,17 @@
+[Unit]
+Description=Nexus Minecraft server instance %i
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/srv/minecraft/%i
+EnvironmentFile=-/etc/nexus/server.env
+ExecStart=/usr/local/bin/nexus-minecraft-server %i
+Restart=on-failure
+RestartSec=10
+KillSignal=SIGINT
+SuccessExitStatus=0 130
+
+[Install]
+WantedBy=multi-user.target

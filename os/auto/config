@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+
+lb config \
+  --distribution bookworm \
+  --architectures amd64 \
+  --archive-areas "main contrib non-free-firmware" \
+  --binary-images iso-hybrid \
+  --debian-installer live \
+  --linux-packages linux-image \
+  --memtest none \
+  --apt-recommends true \
+  --bootappend-live "boot=live components username=nexus locales=en_US.UTF-8 keyboard-layouts=us"

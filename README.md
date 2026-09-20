@@ -43,3 +43,16 @@ POST {endpoint}/api/servers/{id}/stop
 
 Configura el endpoint desde `Settings → Android server controller`. Sin endpoint,
 la app funciona en modo demo para poder revisar toda la interfaz.
+
+## Nexus OS
+
+También incluye una distribución Linux live basada en Debian para usar el panel
+como estación de administración. El proyecto está en `os/` y puede generar una
+ISO con:
+
+```bash
+./os/build-iso.sh
+```
+
+La primera edición integra XFCE, Firefox ESR, Java 17, el dashboard local y una
+plantilla systemd para instancias Minecraft en `/srv/minecraft`.

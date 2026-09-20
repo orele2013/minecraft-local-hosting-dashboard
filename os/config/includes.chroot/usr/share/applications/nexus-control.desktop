@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Nexus Control
+Comment=Manage the local Minecraft network
+Exec=/usr/local/bin/nexus-control
+Icon=utilities-terminal
+Terminal=false
+Categories=Network;System;

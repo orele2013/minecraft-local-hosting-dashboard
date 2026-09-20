@@ -1,0 +1,15 @@
+[Unit]
+Description=Nexus Control local dashboard
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/nexus-control
+ExecStart=/usr/bin/python3 -m http.server 4173 --bind 127.0.0.1 --directory /opt/nexus-control
+Restart=on-failure
+RestartSec=2
+User=nexus
+
+[Install]
+WantedBy=multi-user.target

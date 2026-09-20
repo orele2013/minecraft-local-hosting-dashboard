@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+INSTANCE="${1:?Usage: nexus-minecraft-server <instance> [jar] }"
+ROOT="${MINECRAFT_SERVER_ROOT:-/srv/minecraft}"
+JAR_NAME="${2:-${MINECRAFT_DEFAULT_JAR:-server.jar}}"
+JAVA_ARGS_VALUE="${MINECRAFT_JAVA_ARGS:--Xms1G -Xmx4G}"
+INSTANCE_DIR="$ROOT/$INSTANCE"
+
+if [ ! -d "$INSTANCE_DIR" ]; then
+  echo "Minecraft instance not found: $INSTANCE_DIR" >&2
+  exit 1
+fi
+
+if [ ! -f "$INSTANCE_DIR/$JAR_NAME" ]; then
+  echo "Minecraft jar not found: $INSTANCE_DIR/$JAR_NAME" >&2
+  exit 1
+fi
+
+cd "$INSTANCE_DIR"
+# shellcheck disable=SC2086
+exec java $JAVA_ARGS_VALUE -jar "$JAR_NAME" nogui

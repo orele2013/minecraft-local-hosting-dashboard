@@ -1,0 +1,7 @@
+[Configuration]
+FontName=Monospace 10
+ColorForeground=#ffffff
+ColorBackground=#0a0a0a
+ColorPalette=#0a0a0a;#ffffff;#8a8a8a;#bdbdbd;#555555;#d8d8d8;#999999;#ffffff;#1a1a1a;#ffffff;#8a8a8a;#bdbdbd;#555555;#d8d8d8;#999999;#ffffff
+MiscAlwaysShowTabs=FALSE
+MiscBell=FALSE

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Nexus Control
+Comment=Open the local Minecraft administration panel
+Exec=/usr/local/bin/nexus-control
+OnlyShowIn=XFCE;
+X-GNOME-Autostart-enabled=true
