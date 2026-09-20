@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Nexus OS
+Comment=Nexus OS full-screen control station
+Exec=/usr/local/bin/nexus-kiosk
+TryExec=/usr/local/bin/nexus-kiosk
+Type=Application
+DesktopNames=Nexus

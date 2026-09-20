@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-install -d -m 0755 /srv/minecraft /etc/nexus /etc/systemd/system/multi-user.target.wants
-install -d -m 0755 /home/nexus/Desktop
+install -d -m 0755 /srv/minecraft /var/lib/nexus /etc/nexus /etc/systemd/system/multi-user.target.wants
 
 useradd --create-home --shell /bin/bash --groups audio,video,plugdev,sudo nexus 2>/dev/null || true
 passwd --delete nexus >/dev/null 2>&1 || true
@@ -18,7 +17,7 @@ if [ -f /etc/lightdm/lightdm.conf ]; then
   sed -i -E \
     -e 's/^#autologin-user=.*/autologin-user=nexus/' \
     -e 's/^#autologin-user-timeout=.*/autologin-user-timeout=0/' \
-    -e 's/^#autologin-session=.*/autologin-session=xfce/' \
+    -e 's/^#autologin-session=.*/autologin-session=nexus/' \
     /etc/lightdm/lightdm.conf
 fi
 
@@ -35,8 +34,5 @@ printf 'nexus ALL=(ALL) NOPASSWD:ALL\n' > /etc/sudoers.d/nexus
 chmod 0440 /etc/sudoers.d/nexus
 
 ln -sf /etc/systemd/system/nexus-control.service /etc/systemd/system/multi-user.target.wants/nexus-control.service
-cp /usr/share/applications/nexus-control.desktop /home/nexus/Desktop/Nexus-Control.desktop
-chown -R nexus:nexus /home/nexus
-chmod +x /usr/local/bin/nexus-control /usr/local/bin/nexus-minecraft-server
-
-printf '%s\n' 'Nexus OS Preview is ready.' > /etc/nexus/first-boot.txt
+chown -R nexus:nexus /home/nexus /srv/minecraft /var/lib/nexus
+chmod +x /usr/local/bin/nexus-control /usr/local/bin/nexus-control-server /usr/local/bin/nexus-kiosk /usr/local/bin/nexus-minecraft-server

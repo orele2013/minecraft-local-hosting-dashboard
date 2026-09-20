@@ -1,17 +1,18 @@
-# Nexus OS Preview
+# Nexus OS
 
-Nexus OS es una imagen live de Debian para administrar servidores de Minecraft
-con el panel Nexus Control integrado. La primera edición usa Debian Bookworm,
-XFCE y Firefox ESR para mantenerla ligera, estable y fácil de modificar.
+Nexus OS es una imagen live de propósito único para administrar servidores de
+Minecraft con Nexus Control integrado. Usa una base Debian Bookworm mínima,
+Openbox y Firefox ESR en modo quiosco; el usuario no entra en un escritorio
+Debian convencional.
 
 ## Qué incluye
 
-- Escritorio XFCE con una configuración visual monocroma.
+- Arranque automático de Nexus Control a pantalla completa.
 - Nexus Control servido localmente en `http://127.0.0.1:4173`.
-- Firefox ESR configurado para abrir el panel al iniciar sesión.
-- Java 17, Python, Git, curl y utilidades de administración.
-- Directorio `/srv/minecraft` para alojar los servidores.
-- Plantilla systemd `nexus-minecraft@.service` para iniciar instancias Minecraft.
+- Backend Python sin dependencias externas para crear y administrar servidores.
+- Java 17, Python, Firefox ESR, NetworkManager y agente QEMU.
+- Directorios `/srv/minecraft` y `/var/lib/nexus` para datos persistentes.
+- Servidores por IP directa o dominio opcional con estado DNS.
 - Construcción reproducible dentro de Docker.
 
 ## Generar la ISO
@@ -31,18 +32,14 @@ os/dist/nexus-os-0.1.0-amd64.iso
 El constructor necesita Docker y utiliza un contenedor privilegiado porque
 `live-build` debe crear un sistema de archivos squashfs y una imagen híbrida.
 
-## Iniciar un servidor Minecraft
+## Crear un servidor Minecraft
 
-Coloca el jar y los archivos del servidor en `/srv/minecraft/<nombre>` y crea
-un servicio con:
+Usa `Nuevo servidor` dentro de Nexus Control. La aplicación descarga el JAR
+oficial de Mojang si no indicas una URL propia, crea la instancia, solicita la
+aceptación de la EULA y permite iniciar, detener, reiniciar, consultar registros
+y enviar comandos.
 
-```bash
-sudo systemctl enable --now nexus-minecraft@survival.service
-```
-
-La plantilla espera `server.jar` dentro del directorio de la instancia y usa
-los parámetros configurables en `/etc/nexus/server.env`.
-
-Esta edición es una ISO live de preview. Todavía no incluye un jar de Minecraft
-ni un backend remoto; eso debe añadirse según el servidor, versión y política
-de acceso que se quiera utilizar.
+El dominio no se registra automáticamente: debes crear el registro A/AAAA o
+SRV en tu proveedor DNS y redirigir el puerto del router a la máquina Nexus OS.
+Si no usas dominio, conecta con una IP detectada y el puerto mostrado por la
+aplicación.

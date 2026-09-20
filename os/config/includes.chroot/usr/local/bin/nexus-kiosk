@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+URL="http://127.0.0.1:4173"
+export HOME=/home/nexus
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+
+mkdir -p "$HOME/.mozilla/nexus-kiosk" "$XDG_CONFIG_HOME" "$XDG_CACHE_HOME"
+openbox >/tmp/nexus-openbox.log 2>&1 &
+
+until curl --silent --fail --max-time 2 "$URL/api/status" >/dev/null; do
+  sleep 1
+done
+
+while true; do
+  firefox-esr \
+    --kiosk \
+    --new-instance \
+    --no-remote \
+    --profile "$HOME/.mozilla/nexus-kiosk" \
+    "$URL"
+  sleep 2
+done
